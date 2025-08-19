@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: SRM - Mercado de Pulgas dos Mil Saberes
+  version: 1.0.0
+paths:
+  /v1/taxas-cambio:
+    get:
+      summary: Buscar taxa de cambio por data
+      parameters:
+        - in: query; name: base; required: true; schema: { type: string, example: OR }
+        - in: query; name: destino; required: true; schema: { type: string, example: TIB }
+        - in: query; name: data; required: true; schema: { type: string, format: date }
+      responses: { '200': { description: OK }, '404': { description: Nao encontrada } }
+    post:
+      summary: Salvar ou atualizar taxa do dia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequisicaoTaxaCambio'
+      responses: { '201': { description: Criada/Atualizada } }
+  /v1/conversoes:
+    post:
+      summary: Converter valor por produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequisicaoConversao'
+      responses: { '200': { description: OK } }
+components:
+  schemas:
+    RequisicaoTaxaCambio:
+      type: object
+      required: [moedaBase, moedaDestino, data, taxa]
+      properties:
+        moedaBase: { type: string }
+        moedaDestino: { type: string }
+        data: { type: string, format: date }
+        taxa: { type: number }
+    RequisicaoConversao:
+      type: object
+      required: [produtoId, moedaOrigem, moedaDestino, valor]
+      properties:
+        produtoId: { type: integer }
+        moedaOrigem: { type: string }
+        moedaDestino: { type: string }
+        valor: { type: number }
+        naData: { type: string, format: date }
+        chaveIdempotencia: { type: string }
