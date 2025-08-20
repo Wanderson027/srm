@@ -5,9 +5,9 @@ import java.time.LocalDate;
 
 public record RequisicaoConversao(
         Long produtoId,
-        String moedaOrigem,  // "OR"
-        String moedaDestino, // "TIB"
+        String moedaOrigem,
+        String moedaDestino,
         BigDecimal valor,
-        LocalDate naData,    // opcional; default = hoje
-        String chaveIdempotencia // opcional
+        LocalDate naData,
+        String chaveIdempotencia
 ) {}
